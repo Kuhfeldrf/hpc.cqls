@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+    <ROSETTASCRIPTS>
+        <SCOREFXNS>
+            <ScoreFunction name="ref2015" weights="ref2015"/>
+            <ScoreFunction name="ref2015_cart" weights="ref2015_cart"/>
+        </SCOREFXNS>
+        
+        <MOVERS>
+            <Docking name="docking" fullatom="1" local_refine="1" score_high="ref2015"/>
+            <FastRelax name="relax" scorefxn="ref2015_cart" />
+        </MOVERS>
+        
+        <PROTOCOLS>
+            <Add mover_name="docking"/>
+            <Add mover_name="relax"/>
+        </PROTOCOLS>
+    </ROSETTASCRIPTS>
+    

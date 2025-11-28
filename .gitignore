@@ -1,0 +1,74 @@
+# Ignore everything in root
+/*
+
+# But include these directories
+!/docking/
+!/md/
+!/.gitignore
+!/README.md
+
+# Ignore specific files/directories
+.bash_history
+.bash_logout
+.bash_profile
+.bashrc
+.cache/
+.cshrc
+.cursor-server/
+.cursor/
+.history
+.lesshst
+.nv/
+.ssh/
+.tcshrc
+.viminfo
+.wget-hsts
+.zsh_history
+.zshrc
+
+# Ignore large data files
+*.gro
+*.xtc
+*.trr
+*.edr
+*.tpr
+*.cpt
+*.xvg
+*.itp
+*.top
+
+# Ignore archive directories
+*/archive/
+*/archived/
+
+# Ignore incorrectly nested paths
+md/fs1/
+docking/fs1/
+
+# Ignore job output files
+*.out
+*.err
+slurm-*
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Ignore backup files
+*.backup
+*.bak
+*.old
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore Jupyter notebooks checkpoints
+.ipynb_checkpoints/
