@@ -27,6 +27,7 @@
 .zshrc
 
 # Ignore large data files
+*.pdb
 *.gro
 *.xtc
 *.trr
