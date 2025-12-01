@@ -20,9 +20,9 @@ log_and_echo ""
 
 # List of structures to prepare
 STRUCTURES=(
-    "GLAPYKLRPVAA_recligand_lr1.pdb"
-    "LLFKDSAIGF_recligand_lr6.pdb"
-    "RPKLPLRYP_recligand_lr2.pdb"
+    "LLFKDSAIGF_3fxi_LLFKDSAIGF_3fxi_input_docked_0003.pdb"
+    "GLAPYKLRPVAA_3fxi_GLAPYKLRPVAA_3fxi_input_docked_0005.pdb"
+    "RPKLPLRYP_3fxi_RPKLPLRYP_3fxi_input_docked_0008.pdb"
 )
 
 # Submit preparation jobs
