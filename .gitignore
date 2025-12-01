@@ -73,3 +73,7 @@ __pycache__/
 
 # Ignore Jupyter notebooks checkpoints
 .ipynb_checkpoints/
+
+# Ignore archive directories and files
+archive/
+archive*/
