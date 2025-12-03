@@ -41,6 +41,9 @@
 # Ignore archive directories
 */archive/
 */archived/
+# Ignore archive directories and files
+archive/
+archive*/
 
 # Ignore incorrectly nested paths
 md/fs1/
@@ -74,6 +77,5 @@ __pycache__/
 # Ignore Jupyter notebooks checkpoints
 .ipynb_checkpoints/
 
-# Ignore archive directories and files
-archive/
-archive*/
+# Ignore all directories in md directory
+md/**/
