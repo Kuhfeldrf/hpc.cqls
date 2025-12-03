@@ -15,7 +15,6 @@
 #       --gres=gpu:v100:4  (4 GPUs, high performance)
 #       --gres=gpu:v100:5  (5 GPUs, maximum performance on cqls-gpu1)
 #SBATCH --mem=64G
-#SBATCH --time=24:00:00
 
 # GPU-Accelerated GROMACS MD Simulation using NVIDIA NGC Container
 # ==================================================================
@@ -366,6 +365,7 @@ echo "  - Duration: 100 ns"
 echo "  - Waters: Included in trajectory"
 echo "  - GPUs: ${NUM_GPUS}x V100 with direct GPU communication"
 echo "  - Container: NGC GROMACS ${GROMACS_TAG}"
+echo "  - Checkpoint frequency: Every 4 hours (240 minutes)"
 echo ""
 
 # Check if we need to generate md.tpr or can continue from checkpoint
@@ -414,6 +414,7 @@ ${SINGULARITY} gmx mdrun -deffnm md \
     -nstlist 300 \
     -pin on \
     -gpu_id ${GPU_IDS} \
+    -cpt 240 \
     -v
 
 # Check exit status and retry with fallback if needed
@@ -430,12 +431,13 @@ if [ $? -ne 0 ]; then
         -update gpu \
         -bonded gpu \
         -nstlist 200 \
+        -cpt 240 \
         -v
     
     if [ $? -ne 0 ]; then
         echo ""
         echo "ERROR: GPU run failed. Falling back to CPU-only..."
-        ${SINGULARITY} gmx mdrun -deffnm md ${CONTINUE_FLAG} -ntomp $CPUS -v
+        ${SINGULARITY} gmx mdrun -deffnm md ${CONTINUE_FLAG} -ntomp $CPUS -cpt 240 -v
     fi
 fi
 
