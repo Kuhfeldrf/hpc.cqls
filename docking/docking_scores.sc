@@ -1,3 +1,0 @@
-SEQUENCE: 
-SCORE: total_score         rms CAPRI_rank       Fnat       I_sc       Irms   Irms_leg cart_bonded dslf_fa13    fa_atr    fa_dun   fa_elec fa_intra_rep fa_intra_sol_xover4              fa_rep              fa_sol hbond_bb_sc hbond_lr_bb    hbond_sc hbond_sr_bb lk_ball_wtd       omega     p_aa_pp rama_prepro         ref yhh_planarity description 
-SCORE:   -3833.675      51.676      0.000      0.000     -2.925     18.752     19.723     770.636   -14.775 -9135.647  1799.075 -2434.257       18.162             286.973            1200.742            4900.363    -370.709    -619.190    -230.601    -240.565    -182.309      72.391    -274.306     134.002     485.066         1.271 input_complex_0004
