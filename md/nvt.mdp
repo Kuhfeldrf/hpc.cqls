@@ -1,11 +1,11 @@
 ; nvt.mdp - used for NVT equilibration (constant Number of particles, Volume, and Temperature)
-; NVT equilibration - 100 ps
+; NVT equilibration - 250 ps (increased for docked protein-peptide complexes)
 
 title                   = NVT equilibration 
 define                  = -DPOSRES  ; position restrain the protein
 ; Run parameters
 integrator              = md        ; leap-frog integrator
-nsteps                  = 50000     ; 2 * 50000 = 100 ps
+nsteps                  = 125000    ; 125000 * 0.002 = 250 ps (increased for docked complexes)
 dt                      = 0.002     ; 2 fs
 ; Output control
 nstxout                 = 500       ; save coordinates every 1.0 ps

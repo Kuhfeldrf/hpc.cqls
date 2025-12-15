@@ -1,11 +1,11 @@
 ; npt.mdp - used for NPT equilibration (constant Number of particles, Pressure, and Temperature)
-; NPT equilibration - 100 ps
+; NPT equilibration - 500 ps (increased for docked protein-peptide complexes)
 
 title                   = NPT equilibration 
 define                  = -DPOSRES  ; position restrain the protein
 ; Run parameters
 integrator              = md        ; leap-frog integrator
-nsteps                  = 50000     ; 2 * 50000 = 100 ps
+nsteps                  = 250000    ; 250000 * 0.002 = 500 ps (increased for docked complexes)
 dt                      = 0.002     ; 2 fs
 ; Output control
 nstxout                 = 500       ; save coordinates every 1.0 ps
