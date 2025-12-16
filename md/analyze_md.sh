@@ -123,12 +123,13 @@ create_index_file() {
     
     # Use splitch to split Protein group by chain - creates Protein_chain1, chain2, etc.
     # Based on topology: chains 1-4 are receptor (A,B,C,D), chain 5 is peptide (P)
-    # Then combine the receptor chains and name them
+    # After splitch 1: groups 17=chainA, 18=chainB, 19=chainC, 20=chainD, 21=chainP(peptide)
+    # After combining 17-20: group 22 = combined receptor chains
+    # FIXED: Correct naming - group 22 is Receptor, group 21 is Peptide
     local make_ndx_input="splitch 1
 17 | 18 | 19 | 20
-name 21 Receptor
-22
-name 23 Peptide
+name 22 Receptor
+name 21 Peptide
 q
 "
     
@@ -151,7 +152,28 @@ q
             
             if [ -n "$peptide_grp" ] && [ -n "$receptor_grp" ]; then
                 rm -f "$MAKE_NDX_ERR" 2>/dev/null
-                log "Successfully added groups to index file - Peptide: $peptide_grp | Receptor: $receptor_grp"
+                
+                # Count atoms in each group to verify correct assignment
+                local pep_atoms=$(awk -v grp="Peptide" '
+                    /^\[/ { in_grp = (index($0, grp) > 0) }
+                    in_grp && /^[0-9]/ { for(i=1;i<=NF;i++) count++ }
+                    END { print count+0 }
+                ' "$index_file")
+                local rec_atoms=$(awk -v grp="Receptor" '
+                    /^\[/ { in_grp = (index($0, grp) > 0) }
+                    in_grp && /^[0-9]/ { for(i=1;i<=NF;i++) count++ }
+                    END { print count+0 }
+                ' "$index_file")
+                
+                log "Successfully added groups to index file:"
+                log "  Peptide: group $peptide_grp ($pep_atoms atoms)"
+                log "  Receptor: group $receptor_grp ($rec_atoms atoms)"
+                
+                # Sanity check: peptide should have fewer atoms than receptor
+                if [ "$pep_atoms" -gt "$rec_atoms" ] && [ "$rec_atoms" -gt 0 ]; then
+                    log "WARNING: Peptide has more atoms than Receptor - groups may be swapped!"
+                fi
+                
                 return 0
             else
                 log "Warning: Groups not found after creation"
@@ -881,6 +903,17 @@ ${PEPTIDE_GROUP}" rms -s md.tpr -f "$TRAJ_FOR_ANALYSIS" -n "$INDEX_FILE" -o "$RM
     if file_ok "$ROG_PEP_XVG"; then
         read -r INIT FINAL AVG _ _ <<< $(xvg_stats "$ROG_PEP_XVG")
         log "Peptide RoG - Initial: $INIT nm | Final: $FINAL nm | Avg: $AVG nm"
+        
+        # Sanity check: peptide RoG should typically be 0.5-1.5 nm for 5-20 residue peptides
+        local PEPLEN=$(get_peptide_len "$name")
+        if [ "$PEPLEN" -gt 0 ]; then
+            # Expected RoG for small peptide: ~0.2*sqrt(N) to 0.4*sqrt(N) nm
+            local avg_float=$(echo "$AVG" | awk '{print $1+0}')
+            if [ "$(echo "$avg_float > 2.0" | bc -l 2>/dev/null || echo 0)" -eq 1 ]; then
+                log "  WARNING: Peptide RoG ($AVG nm) seems high for a $PEPLEN-residue peptide!"
+                log "  Expected range: ~0.5-1.5 nm. Check if correct group is selected."
+            fi
+        fi
     fi
     
     # =========================================================================
